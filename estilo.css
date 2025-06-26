@@ -1,0 +1,93 @@
+/* Reset básico */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', sans-serif;
+  }
+  
+  body {
+    background: linear-gradient(to bottom, #0d0d0d, #1a1a1a);
+    color: #ffffff;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+  }
+  
+  /* Título */
+  h1 {
+    color: #bb86fc;
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    text-shadow: 0 0 10px #bb86fc80;
+  }
+  
+  /* Caixa do formulário */
+  .form-box {
+    background-color: #121212;
+    border: 1px solid #2e003e;
+    border-radius: 20px;
+    padding: 30px 25px;
+    box-shadow: 0 0 25px rgba(187, 134, 252, 0.3), inset 0 0 10px rgba(255, 255, 255, 0.02);
+    display: flex;
+    flex-direction: column;
+    max-width: 360px;
+    width: 100%;
+  }
+  
+  /* Labels */
+  label {
+    margin: 12px 0 6px;
+    font-size: 1rem;
+    color: #d8b4ff;
+  }
+  
+  /* Inputs */
+  input[type="text"],
+  input[type="number"] {
+    background-color: #1e1e2f;
+    color: #ffffff;
+    border: 1px solid #bb86fc;
+    border-radius: 10px;
+    padding: 12px;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+  
+  input:focus {
+    border-color: #d8b4ff;
+    box-shadow: 0 0 8px #bb86fc88;
+  }
+  
+  /* Botão */
+  button {
+    background: linear-gradient(to right, #bb86fc, #7c3aed);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    padding: 12px 20px;
+    margin-top: 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 10px rgba(187, 134, 252, 0.3);
+  }
+  
+  button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(187, 134, 252, 0.5);
+  }
+  
+  /* Mensagem opcional */
+  .message {
+    margin-top: 20px;
+    font-size: 1rem;
+    text-align: center;
+    color: #d8b4ff;
+  }
+  
