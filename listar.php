@@ -3,20 +3,22 @@
 <head>
     <meta charset="UTF-8"> <!-- Define o conjunto de caracteres da página -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Responsividade -->
-    <title>Document</title> <!-- Título da página -->
+    <title>Listagem de Pessoas e Produtos</title> <!-- Título da página -->
     <style>
-        .person { margin-bottom: 20px; border: 1px solid #ccc; padding: 10px; }
+        .person, .product { margin-bottom: 20px; border: 1px solid #ccc; padding: 10px; }
         .alterar-form { margin-top: 10px; }
     </style>
 </head>
 <body>
     <header>
-        <h1>Lista de Pessoas Cadastradas</h1> <!-- Título principal da página -->
+        <h1>Lista de Pessoas e Produtos Cadastrados</h1> <!-- Título principal da página -->
     </header>
     <section>
+        <h2>Pessoas Cadastradas</h2>
         <?php
         require_once 'conexao.php';
         require_once 'pessoa.php';
+        require_once 'produto.php';
 
         $database = new BancoDeDados();
         $db = $database->obterConexao();
@@ -37,6 +39,7 @@
             }
         }
 
+        // Listar pessoas
         $pessoa = new Pessoa($db);
         $stmt = $pessoa->ler();
         $num_linhas = $stmt->rowCount();
@@ -56,7 +59,28 @@
                 echo "</div>";
             }
         } else {
-            echo "<p class='error'>Nenhum registro encontrado.</p>";
+            echo "<p class='error'>Nenhum registro de pessoas encontrado.</p>";
+        }
+        ?>
+    </section>
+
+    <section>
+        <h2>Produtos Cadastrados</h2>
+        <?php
+        // Listar produtos
+        $produtos = Produto::ler($db);
+
+        if (!empty($produtos)) {
+            foreach ($produtos as $produto) {
+                echo "<div class='product'>";
+                echo "<p>ID: " . $produto['id'] . "</p>";
+                echo "<p>Nome: " . $produto['nome'] . "</p>";
+                echo "<p>Preço: R$ " . number_format($produto['preco'], 2, ',', '.') . "</p>";
+                echo "<p>Descrição: " . $produto['descricao'] . "</p>";
+                echo "</div>";
+            }
+        } else {
+            echo "<p class='error'>Nenhum registro de produtos encontrado.</p>";
         }
         ?>
     </section>
