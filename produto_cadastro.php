@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="estilo.css">
+
 <?php
 require_once 'produto.php';
 require_once 'conexao.php'; 

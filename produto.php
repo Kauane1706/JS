@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="estilo.css">
+
 <?php
 
 class Produto {
