@@ -1,37 +1,76 @@
 <link rel="stylesheet" href="estilo.css">
-
 <?php
-
 class Produto {
-    private $id;
+    private $conexao;
+    private $tabela = "produtos";
     private $nome;
+    private $codigo;
+    private $quantidade;
     private $preco;
-    private $descricao;
 
-    public function __construct($nome, $preco, $descricao) {
+    // Construtor com os atributos principais, sem id
+    public function __construct($conexao, $nome = null, $codigo = null, $quantidade = null, $preco = null) {
+        $this->conexao = $conexao;
         $this->nome = $nome;
+        $this->codigo = $codigo;
+        $this->quantidade = $quantidade;
         $this->preco = $preco;
-        $this->descricao = $descricao;
     }
 
-    public function criar($conexao) {
-        $sql = "INSERT INTO produtos (nome, preco, descricao) VALUES (?, ?, ?)";
-        $stmt = $conexao->prepare($sql);
-        $stmt->bind_param("sds", $this->nome, $this->preco, $this->descricao);
+    // Verifica se o código já existe no banco
+    public function codigoExiste() {
+        $sql = "SELECT COUNT(*) FROM " . $this->tabela . " WHERE codigo = :codigo";
+        $stmt = $this->conexao->prepare($sql);
+        $stmt->execute([':codigo' => $this->codigo]);
+        return $stmt->fetchColumn() > 0;
+    }
+
+    // Inserir novo produto, evitando código duplicado
+    public function criar() {
+        if ($this->codigoExiste()) {
+            throw new Exception("Código duplicado: este código já está cadastrado.");
+        }
+
+        $sql = "INSERT INTO " . $this->tabela . " (nome, codigo, quantidade, preco) VALUES (:nome, :codigo, :quantidade, :preco)";
+        $stmt = $this->conexao->prepare($sql);
+        return $stmt->execute([
+            ':nome' => $this->nome,
+            ':codigo' => $this->codigo,
+            ':quantidade' => $this->quantidade,
+            ':preco' => $this->preco
+        ]);
+    }
+
+    // Ler todos os produtos
+    public function ler() {
+        $sql = "SELECT * FROM " . $this->tabela;
+        $stmt = $this->conexao->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+    // Excluir produto pelo código (como não temos id)
+    public function excluirPorCodigo($codigo) {
+        $query = "DELETE FROM " . $this->tabela . " WHERE codigo = :codigo";
+        $stmt = $this->conexao->prepare($query);
+
+        $codigoSanitizado = htmlspecialchars(strip_tags($codigo));
+        $stmt->bindParam(':codigo', $codigoSanitizado);
+
         return $stmt->execute();
     }
 
-    public static function ler($conexao) {
-        $sql = "SELECT * FROM produtos";
-        $result = $conexao->query($sql);
-        return $result->fetch_all(MYSQLI_ASSOC);
-    }
+    // Atualizar produto pelo código
+    public function atualizarPorCodigo($codigo) {
+        $sql = "UPDATE " . $this->tabela . " SET nome = :nome, quantidade = :quantidade, preco = :preco WHERE codigo = :codigo";
+        $stmt = $this->conexao->prepare($sql);
 
-    public function editar($conexao, $id) {
-        $sql = "UPDATE produtos SET nome = ?, preco = ?, descricao = ? WHERE id = ?";
-        $stmt = $conexao->prepare($sql);
-        $stmt->bind_param("sdsi", $this->nome, $this->preco, $this->descricao, $id);
-        return $stmt->execute();
+        return $stmt->execute([
+            ':nome' => $this->nome,
+            ':quantidade' => $this->quantidade,
+            ':preco' => $this->preco,
+            ':codigo' => $codigo
+        ]);
     }
 }
 ?>
