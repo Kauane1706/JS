@@ -1,0 +1,103 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    max-width: 900px;
+    margin: 20px auto;
+    line-height: 1.6;
+    color: #4a4a4a;
+    background-color: #fafafa;
+    padding: 25px 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(180,180,180,0.2);
+}
+h1, h2, h3 {
+    color: #3a5068;
+}
+nav {
+    margin-bottom: 35px;
+    padding: 12px 20px;
+    background: #dbe9f4;
+    border-radius: 8px;
+    box-shadow: inset 0 0 5px #c0d9f1;
+}
+nav a {
+    color: #3a5068;
+    margin-right: 18px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: color 0.3s ease;
+}
+nav a:hover {
+    color: #1f4068;
+    text-decoration: underline;
+}
+section {
+    margin-bottom: 45px;
+    background: #ffffff;
+    padding: 20px 25px;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(150,150,150,0.1);
+}
+ul {
+    list-style: inside disc;
+    margin-left: 20px;
+    color: #555;
+}
+ol {
+    margin-left: 20px;
+    color: #555;
+}
+p {
+    margin: 12px 0;
+}
+code {
+    background-color: #f0f4f8;
+    padding: 3px 6px;
+    border-radius: 4px;
+    font-family: 'Courier New', Courier, monospace;
+    color: #2c3e50;
+}
+footer {
+    text-align: center;
+    color: #999;
+    font-size: 0.9rem;
+    margin-top: 55px;
+    border-top: 1px solid #ddd;
+    padding-top: 15px;
+    font-style: italic;
+}
+
+/* Responsividade simples */
+@media (max-width: 600px) {
+    body {
+        padding: 15px 10px;
+    }
+    nav {
+        font-size: 0.9rem;
+    }
+    nav a {
+        margin-right: 12px;
+        font-size: 0.9rem;
+    }
+}
+
+.print-button {
+    background-color: #e3effa;
+    color: #2d4c6b;
+    border: 1px solid #c3ddeb;
+    border-radius: 6px;
+    padding: 8px 14px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    margin-bottom: 20px;
+    transition: background-color 0.3s ease;
+}
+.print-button:hover {
+    background-color: #d2e7f5;
+}
+@media print {
+    .print-button, nav {
+        display: none;
+    }
+}
