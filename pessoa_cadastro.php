@@ -1,11 +1,11 @@
-<link rel="stylesheet" href="estilo.css">
 <?php
 require_once 'conexao.php';
 require_once 'pessoa.php';
 
 $mensagem = '';
+
+// Só processa se for POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $id = $_POST['id'] ?? null;
     $nome = $_POST['nome'] ?? '';
     $idade = $_POST['idade'] ?? '';
 
@@ -13,30 +13,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $conexao = $database->obterConexao();
 
     if ($conexao) {
-        $pessoa = new Pessoa($conexao, $id, $nome, $idade);
+        $pessoa = new Pessoa($conexao, $nome, $idade);
         if ($pessoa->criar()) {
-            $mensagem = "Pessoa cadastrada com sucesso!";
+            // Após criar, redireciona para evitar duplicação
+            header("Location: cadastro_pessoa.php?sucesso=1");
+            exit;
         } else {
-            $mensagem = "Erro ao cadastrar pessoa. Verifique se o ID já existe.";
+            $mensagem = "Erro ao cadastrar pessoa.";
         }
     } else {
         $mensagem = "Erro de conexão com o banco de dados.";
     }
 }
-?>
 
+// Mostrar mensagem de sucesso se existir ?sucesso=1 na URL
+if (isset($_GET['sucesso']) && $_GET['sucesso'] == 1) {
+    $mensagem = "Pessoa cadastrada com sucesso!";
+}
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <title>Cadastro de Pessoa</title>
+    <link rel="stylesheet" href="estilo.css">
 </head>
 <body>
     <h1>Cadastro de Pessoa</h1>
     <form method="POST">
-        <label for="id">ID:</label>
-        <input type="number" name="id" required><br><br>
-
         <label for="nome">Nome:</label>
         <input type="text" name="nome" required><br><br>
 
@@ -47,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </form>
 
     <?php if (!empty($mensagem)): ?>
-        <p style="color: green;"><?php echo $mensagem; ?></p>
+        <p style="color: green;"><?php echo htmlspecialchars($mensagem); ?></p>
     <?php endif; ?>
 </body>
 </html>
